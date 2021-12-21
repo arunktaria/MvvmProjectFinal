@@ -5,26 +5,17 @@ import android.content.Context
 import android.widget.ProgressBar
 
 class ProgressBuilder {
-
-fun show(context:Context,show : Boolean,text:String)
+    var progressDialogs : ProgressDialog?=null
+    fun show(context:Context,text:String)
 {
-
-
-    val progressDialogs = ProgressDialog(context)
-    progressDialogs.setMessage(text)
-    progressDialogs.setCancelable(true)
-
-    if (show==true)
-    {
-        progressDialogs.show()
-    }
-    if (show==false)
-    {
-        progressDialogs.dismiss()
-    }
-
-
-
+     progressDialogs= ProgressDialog(context)
+    progressDialogs!!.setMessage(text)
+    progressDialogs!!.setCancelable(true)
+ progressDialogs!!.show()
+}
+fun dismissDialog()
+{
+    progressDialogs?.dismiss()
 }
 
 

@@ -16,7 +16,7 @@ import com.example.mvvmproject.UI.Users_Address
 import retrofit2.Response
 
 class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
-
+    val progress = ProgressBuilder()
     var usersdata = MutableLiveData<User_Details>()
 
     val livedatao: LiveData<User_Details>
@@ -48,8 +48,8 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
     ): UserDataReposnse {
 
         Handler(Looper.getMainLooper()).post(Runnable {
-            val progress = ProgressBuilder()
-            progress.show(context, true, "please wait...")
+
+            progress.show(context, "please wait...")
         })
         val result = retrofitApi.getLoginStatus(userModel)
         if (result.body() != null) {
@@ -79,8 +79,8 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
                             "User not found!",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val progress = ProgressBuilder()
-                        progress.show(context, false, "please wait...")
+
+                        progress.dismissDialog()
 
                     })
                 }
@@ -90,22 +90,23 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
                         context.startActivity(Intent(context, Users_Address::class.java))
                     })
                 }
-            } else if (!userresponsedata?.data?.email.equals(null)) {
+            }
+            if (userresponsedata?.data?.email.equals(null)) {
                 Handler(Looper.getMainLooper()).post(Runnable {
                     Toast.makeText(
                         context,
                         "user not found!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    val progress = ProgressBuilder()
-                    progress.show(context, false, "please wait...")
+
+                    progress.dismissDialog()
                 })
             }
         } else {
             Handler(Looper.getMainLooper()).post(Runnable {
                 Toast.makeText(context, "something went wrong!", Toast.LENGTH_SHORT).show()
-                val progress = ProgressBuilder()
-                progress.show(context, false, "please wait...")
+
+                progress.dismissDialog()
             })
         }
         return result.body()!!
