@@ -41,7 +41,17 @@ var status:String?=null,
 var last_name:String?=null,
 
 @ColumnInfo(name = "email")
-var email:String?=null
+var email:String?=null,
+
+    @ColumnInfo(name = "address")
+var address:String?=null,
+
+
+    @ColumnInfo(name = "city")
+var city:String?=null
+
+
+
 
 )
 {

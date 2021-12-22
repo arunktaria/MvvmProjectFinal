@@ -14,7 +14,7 @@
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:id="@+id/imageviewlogin"
-
+android:background="@drawable/ic_launcher_foreground"
         />
 
 
@@ -24,9 +24,9 @@
         android:layout_height="@dimen/editext_hight"
         android:id="@+id/emailedittext"
         android:hint="Email"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="17sp"
-        android:textColorHint="@color/white"
+        android:textColorHint="#A19E9E"
         android:padding="7sp"
         android:background="@drawable/editextwhitebackground"
         />
@@ -39,10 +39,11 @@
         android:layout_height="@dimen/editext_hight"
         android:id="@+id/passwordedittext"
         android:hint="Password"
-        android:textColorHint="@color/white"
+        android:textColorHint="#A19E9E"
         android:textSize="17sp"
         android:padding="7sp"
-        android:textColor="@color/white"
+
+        android:textColor="@color/black"
         android:layout_marginTop="16sp"
         android:background="@drawable/editextwhitebackground"
         />

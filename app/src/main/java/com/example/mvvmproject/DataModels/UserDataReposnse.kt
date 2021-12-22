@@ -23,7 +23,14 @@ import androidx.room.PrimaryKey
         var state: String? = null
         var status: String? = null
         var last_name: String? = null
+        var address: String? = null
         var email: String? = null
+        var city: String? = null
+
+
+
+
+
 
     }
 

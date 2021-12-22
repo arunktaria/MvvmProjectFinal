@@ -29,6 +29,11 @@ var TAG ="TAG"
 
         binding.lifecycleOwner=this
 
+        val btnprofile=findViewById<ImageView>(R.id.personprofileitemimagebtn)
+        btnprofile.setOnClickListener {
+            startActivity(Intent(Users_Address@this, UserProfile::class.java))
+        }
+
 
 
 
@@ -54,4 +59,27 @@ var TAG ="TAG"
 
 
     }
+/*
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflator =MenuInflater(this)
+        inflator.inflate(R.menu.profilemenu,menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+           R.id.personmenuitem->
+           {
+               startActivity(Intent(Users_Address@this,UserProfile::class.java))
+           }
+
+        }
+
+
+        return super.onOptionsItemSelected(item)
+    }
+*/
+
 }

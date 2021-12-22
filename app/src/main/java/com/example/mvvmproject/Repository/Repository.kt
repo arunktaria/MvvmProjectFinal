@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.mvvmproject.DataModels.*
 import com.example.mvvmproject.RetroApi.RetrofitApi
 import com.example.mvvmproject.Database.UserDatabase
-import com.example.mvvmproject.ProgressBuilder
+import com.example.mvvmproject.utils.ProgressBuilder
 import com.example.mvvmproject.UserDataEntity2
 import com.example.mvvmproject.UI.Users_Address
 import retrofit2.Response
@@ -66,7 +66,13 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
                     it.country,
                     it.state_id,
                     it.state,
-                    it.status
+                    it.status,
+                    it.last_name,
+                    it.email,
+                    it.address,
+                    it.city
+
+
                 )
             }
             if (userentity != null) {

@@ -1,4 +1,4 @@
-package com.example.mvvmproject
+package com.example.mvvmproject.utils
 
 import android.app.ProgressDialog
 import android.content.Context
