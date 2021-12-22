@@ -21,6 +21,7 @@ import com.example.mvvmproject.ViewModels.Factories.ViewModelFactoryClass
 import com.example.mvvmproject.ViewModels.ViewModelClass
 import com.example.mvvmproject.databinding.ActivityUserProfileBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 
 class UserProfile : AppCompatActivity() {
 
@@ -61,27 +62,32 @@ lateinit var binding :ActivityUserProfileBinding
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==100)
-        {       val bitmap=data?.extras?.get("data") as Bitmap
-            binding.shapeableImageView.setImageBitmap(bitmap)
-            bottomSheet.dismiss()
-        }
-        if(requestCode==101)
-        {
-            //working as well
-            /*val uri=data?.data
+
+        if(data!=null) {
+
+
+            if (requestCode == 100) {
+                val bitmap = data?.extras?.get("data") as Bitmap
+                binding.shapeableImageView.setImageBitmap(bitmap)
+                bottomSheet.dismiss()
+            }
+            if (requestCode == 101) {
+                //working as well
+                /*val uri=data?.data
             binding.shapeableImageView.setImageURI(uri)*/
 
-                val uri =data?.data
-            val bitmam=MediaStore.Images.Media.getBitmap(contentResolver,uri)
+                val uri = data?.data
+                val bitmam = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 binding.shapeableImageView.setImageBitmap(bitmam)
 
 
+                bottomSheet.dismiss()
+            }
+        }else{
+
+            Toast.makeText(UserProfile@this,"declined!",Toast.LENGTH_SHORT).show()
             bottomSheet.dismiss()
         }
-
-
-
 
     }
 
