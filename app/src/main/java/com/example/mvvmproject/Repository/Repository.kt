@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.ui.text.createTextLayoutResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mvvmproject.DataModels.*
@@ -13,12 +15,15 @@ import com.example.mvvmproject.Database.UserDatabase
 import com.example.mvvmproject.utils.ProgressBuilder
 import com.example.mvvmproject.UserDataEntity2
 import com.example.mvvmproject.UI.Users_Address
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
     val progress = ProgressBuilder()
     var usersdata = MutableLiveData<User_Details>()
-
+     var TAG="tag"
     val livedatao: LiveData<User_Details>
         get() = usersdata
 
@@ -55,26 +60,31 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
         if (result.body() != null) {
             userLivedata.postValue(result.body())
             val userresponsedata = result.body()
-            var userentity = userresponsedata?.data?.let {
-                UserDataEntity2(
-                    it.doctor_name.toString(),
-                    it.first_name.toString(),
-                    it.code.toString(),
-                    it.mobile.toString(),
-                    it.dob.toString(),
-                    it.zip_code.toString(),
-                    it.country,
-                    it.state_id,
-                    it.state,
-                    it.status,
-                    it.last_name,
-                    it.email,
-                    it.address,
-                    it.city
 
 
-                )
+
+
+           var ob=UserDataEntity2()
+            var userentity = userresponsedata?.data?.apply {
+             ob =  UserDataEntity2()
+                ob.doctor_name=   doctor_name.toString()
+                ob.patient_id=   patient_id.toString()
+                ob.first_name=   first_name.toString()
+                ob.code=     code.toString()
+                ob.mobile=     mobile.toString()
+                ob.dob=     dob.toString()
+                ob.zip_code=     zip_code.toString()
+                ob.country=      country.toString()
+                ob.state=    state_id
+                ob.state=     state
+                ob.status=     status
+                ob.last_name=     last_name
+                ob.email=     email
+                ob.address=     address
+                ob.city=     city.toString()
+
             }
+
             if (userentity != null) {
                 var email = result.body()?.data?.email.toString()
 
@@ -91,7 +101,8 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
                     })
                 }
                 if (!userresponsedata?.data?.email.equals(null)) {
-                    database.getDao().insertUserData(userentity)
+                    Log.d(TAG, "in database insertion: "+ob.email.toString())
+                    database.getDao().insertUserData(ob)
                     Handler(Looper.getMainLooper()).post(Runnable {
                         context.startActivity(Intent(context, Users_Address::class.java))
                     })
@@ -118,6 +129,20 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
         return result.body()!!
     }
 
-}
+var mutableupdate=MutableLiveData<GetUserDataUpdates>()
+
+    suspend  fun getUserUpdates(userupdate : UserPofileUpdate): GetUserDataUpdates {
+        retrofitApi.getUserUpdate(userupdate)
+      val result = retrofitApi.getUserUpdate(userupdate).body()!!
+
+      CoroutineScope(Dispatchers.IO)
+          .launch {
+              mutableupdate.postValue(result)
+              database.getDao().delete()
+
+          }
+      return result
+  }
+  }
 
 

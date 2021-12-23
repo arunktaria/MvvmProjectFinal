@@ -62,10 +62,11 @@
                 android:layout_width="120sp"
                 android:layout_height="120sp"
                 android:padding="5sp"
+
                 android:scaleType="centerCrop"
                 android:background="@drawable/profileoutline"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_launcher_foreground"
+                android:src="@drawable/userimage"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.53"
@@ -111,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/editext_hight"
             android:layout_marginTop="4dp"
-            android:text="@{userprofile.first_name}"
+            android:text="@={userprofile.first_name}"
             android:background="@drawable/editextblackbackground"
             android:hint="First name"
             android:padding="7dp" />
@@ -130,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.last_name}"
+        android:text="@={userprofile.last_name}"
         android:background="@drawable/editextblackbackground"
         android:hint="First name"
         android:padding="7dp" />
@@ -150,7 +151,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.dob}"
+        android:text="@={userprofile.dob}"
         android:background="@drawable/editextblackbackground"
         android:hint="birthday"
         android:padding="7dp" />
@@ -168,7 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.email}"
+        android:text="@={userprofile.email}"
         android:background="@drawable/editextblackbackground"
         android:hint="Email"
         android:padding="7dp" />
@@ -188,7 +189,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.mobile}"
+        android:text="@={userprofile.mobile}"
         android:background="@drawable/editextblackbackground"
         android:hint="mobile number"
         android:padding="7dp" />
@@ -208,7 +209,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.address+' '+ userprofile.country +' '+userprofile.zip_code }"
+        android:text="@={userprofile.address}"
         android:background="@drawable/editextblackbackground"
         android:hint="First name"
         android:padding="7dp" />
@@ -226,7 +227,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.country}"
+        android:text="@={userprofile.country}"
         android:background="@drawable/editextblackbackground"
         android:hint="country"
         android:padding="7dp" />
@@ -241,11 +242,11 @@
         android:textSize="@dimen/textsize" />
 
     <EditText
-        android:id="@+id/countryprofile"
+        android:id="@+id/stateprofilee"
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.state}"
+        android:text="@={userprofile.state}"
         android:background="@drawable/editextblackbackground"
         android:hint="state"
         android:padding="7dp" />
@@ -264,7 +265,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.city}"
+        android:text="@={userprofile.city}"
         android:background="@drawable/editextblackbackground"
         android:hint="state"
         android:padding="7dp" />
@@ -280,11 +281,11 @@
         android:textSize="@dimen/textsize" />
 
     <EditText
-        android:id="@+id/citycode"
+        android:id="@+id/zipcodeprofile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/editext_hight"
         android:layout_marginTop="4dp"
-        android:text="@{userprofile.zip_code}"
+        android:text="@={userprofile.zip_code}"
         android:background="@drawable/editextblackbackground"
         android:hint="city code"
         android:padding="7dp" />

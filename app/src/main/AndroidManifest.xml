@@ -37,10 +37,15 @@
         <activity
             android:name=".UI.Users_Address"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
         <activity
             android:name=".UI.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+            
+        </activity>
     </application>
 
 </manifest>

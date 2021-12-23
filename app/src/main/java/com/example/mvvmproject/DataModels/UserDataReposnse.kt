@@ -25,11 +25,9 @@ import androidx.room.PrimaryKey
         var last_name: String? = null
         var address: String? = null
         var email: String? = null
-        var city: String? = null
-
-
-
-
+        var patient_id: String? = null
+        var city:String?=null
+        var profile_photo:String?=null
 
 
     }

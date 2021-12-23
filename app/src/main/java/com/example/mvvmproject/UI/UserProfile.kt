@@ -8,13 +8,17 @@ import android.icu.number.IntegerWidth
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.mvvmproject.BaseApplication.ApplicationMain
+import com.example.mvvmproject.DataModels.UserPofileUpdate
 import com.example.mvvmproject.R
 
 import com.example.mvvmproject.ViewModels.Factories.ViewModelFactoryClass
@@ -22,40 +26,95 @@ import com.example.mvvmproject.ViewModels.ViewModelClass
 import com.example.mvvmproject.databinding.ActivityUserProfileBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class UserProfile : AppCompatActivity() {
-
-lateinit var  bottomSheet:ChoosePhotoBottomSheet
-lateinit var binding :ActivityUserProfileBinding
+    var TAG = "tag"
+    lateinit var userupdatetemp: UserPofileUpdate
+    lateinit var patient_id: String
+    lateinit var bottomSheet: ChoosePhotoBottomSheet
+    lateinit var binding: ActivityUserProfileBinding
+    lateinit var bitmapg: Bitmap
+     var userdata= UserPofileUpdate()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityUserProfileBinding.inflate(layoutInflater)
+        binding = ActivityUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
+        /*  Handler(Looper.getMainLooper()).postDelayed(Runnable {
 
-       // Toast.makeText(this,color.toString(),Toast.LENGTH_LONG).show()
+              Glide.with(this).load("").into(binding.shapeableImageView)
+
+          },2000)
+  */
 
 
-        binding.getimagefloatingbtn.setOnClickListener {
-          bottomSheet =ChoosePhotoBottomSheet(UserProfile@this,this)
-            //bottomSheet.window?.setBackgroundDrawable()
+        binding.lifecycleOwner = this
+        val repositorytemp = (application as ApplicationMain).repository
+        val viewmodelinstanse = ViewModelProvider(
+            this,
+            ViewModelFactoryClass(repositorytemp, this)
+        ).get(ViewModelClass::class.java)
 
-                bottomSheet.show()
+
+        binding.btnupdateprofile.setOnClickListener {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                patient_id = repositorytemp.database.getDao().getUserId()
+            }
+
+            userdata.apply {
+
+               patient_id = "120"
+                email = binding.emaileditextprofile.text.toString()
+                first_name = binding.firstname.text.toString()
+                last_name = binding.lastname.text.toString()
+                dob =binding.birthday.text.toString()
+                address = binding.addressprofile.text.toString()
+                city = binding.cityprofilee.text.toString()
+                state_id = binding.stateprofilee.text.toString()
+                country_id="16055"
+                mobile = binding.mobilenumprofile.text.toString()
+                zip_code = binding.zipcodeprofile.text.toString()
+                //bitmap = bitmapg
+
+
+
+
+            }
+
+
+            Log.d(TAG, "onCreate: in UserProfile " + userdata.patient_id.toString())
+            viewmodelinstanse.setUserUpdates(userdata, this)
         }
 
 
-        val repository=(application as ApplicationMain ).repository
-        val viewmodel=
-            ViewModelProvider(this, ViewModelFactoryClass(repository,this)).get(ViewModelClass::class.java)
+/*
+viewmodelinstanse.dataupdates.observe(this, Observer {
+    binding.userprofile=it
 
-        viewmodel.getUserDatafromDb().observe(this, Observer {
-            Log.d("TAG", "in user address "+it?.mobile)
-            binding.userprofile=it
+
+})
+*/
+
+
+        binding.getimagefloatingbtn.setOnClickListener {
+            bottomSheet = ChoosePhotoBottomSheet(UserProfile@ this, this)
+            //bottomSheet.window?.setBackgroundDrawable()
+
+            bottomSheet.show()
+        }
+
+
+        viewmodelinstanse.getUserDatafromDb().observe(this, Observer {
+            Log.d("TAG", "in user address " + it?.mobile)
+            binding.userprofile = it
 
 
         })
-
 
 
     }
@@ -63,13 +122,16 @@ lateinit var binding :ActivityUserProfileBinding
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(data!=null) {
+        if (data != null) {
 
 
             if (requestCode == 100) {
+
+
                 val bitmap = data?.extras?.get("data") as Bitmap
                 binding.shapeableImageView.setImageBitmap(bitmap)
                 bottomSheet.dismiss()
+                bitmapg = bitmap
             }
             if (requestCode == 101) {
                 //working as well
@@ -77,20 +139,19 @@ lateinit var binding :ActivityUserProfileBinding
             binding.shapeableImageView.setImageURI(uri)*/
 
                 val uri = data?.data
-                val bitmam = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                binding.shapeableImageView.setImageBitmap(bitmam)
 
-
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                binding.shapeableImageView.setImageBitmap(bitmapg)
                 bottomSheet.dismiss()
+                bitmapg = bitmap
             }
-        }else{
+        } else {
 
-            Toast.makeText(UserProfile@this,"declined!",Toast.LENGTH_SHORT).show()
+            Toast.makeText(UserProfile@ this, "declined!", Toast.LENGTH_SHORT).show()
             bottomSheet.dismiss()
         }
 
     }
-
 
 
 }
