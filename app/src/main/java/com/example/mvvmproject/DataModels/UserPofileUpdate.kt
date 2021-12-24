@@ -3,6 +3,8 @@ package com.example.mvvmproject.DataModels
 import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import okhttp3.MultipartBody
+import java.io.File
 
 class UserPofileUpdate {
 
@@ -17,7 +19,7 @@ class UserPofileUpdate {
     var country_id: String ?=null
     var mobile:String?=null
     var zip_code:String?=null
-    var profile_photo: Bitmap?=null
+  //  var profile_photo: MultipartBody.Part?=null
 
 
 }

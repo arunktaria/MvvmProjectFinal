@@ -267,7 +267,7 @@
         android:layout_marginTop="4dp"
         android:text="@={userprofile.city}"
         android:background="@drawable/editextblackbackground"
-        android:hint="state"
+        android:hint="city"
         android:padding="7dp" />
 
 

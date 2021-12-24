@@ -1,9 +1,12 @@
 package com.example.mvvmproject.RetroApi
 
 import com.example.mvvmproject.DataModels.*
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface RetrofitApi {
 
@@ -17,7 +20,7 @@ interface RetrofitApi {
 
 
     @POST("index.php?mod=profile&act=set_patient_profile")
-    suspend fun getUserUpdate(@Body updateProfile:UserPofileUpdate) : Response<GetUserDataUpdates>
+    suspend fun getUserUpdate(@Body updateProfile:UserPofileUpdate) : Response<UserDataReposnse>
 
 
 }

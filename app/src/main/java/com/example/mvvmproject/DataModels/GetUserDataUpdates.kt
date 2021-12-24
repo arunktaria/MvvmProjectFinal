@@ -19,7 +19,7 @@ class GetUserDataUpdates {
             val mobile: String? = null
             val zip_code: String? = null
             //val bitmap: Bitmap? = null
-
+            val state:String?=null
         }
 
 

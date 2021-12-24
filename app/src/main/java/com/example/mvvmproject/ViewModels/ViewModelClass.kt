@@ -12,6 +12,7 @@ import com.example.mvvmproject.Repository.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 class ViewModelClass(val repository: Repository, val context: Context) : ViewModel() {
 
@@ -62,27 +63,24 @@ fun getUserDatafromDb() : LiveData<UserDataEntity2>
        CoroutineScope(Dispatchers.IO).launch {
            val temp = repository.getUserUpdates(userData)
            val t=temp.data
-
+           Log.d("TAG", "setUserUpdates: in viewmodel"+t?.email.toString()+" : "+t?.state+" in view model ")
             ob.apply {
-
-               ob.patient_id=   patient_id.toString()
-               ob.first_name=   first_name.toString()
-               ob.mobile=     mobile.toString()
-               ob.dob=     dob.toString()
-               ob.zip_code=     zip_code.toString()
-               ob.state=    state_id
-               ob.last_name=     last_name
-               ob.email=     email
-               ob.address=     address
-               ob.city=     city.toString()
-
+               ob.patient_id=   t?.patient_id.toString()
+               ob.first_name=  t?. first_name.toString()
+               ob.mobile=     t?.mobile.toString()
+               ob.dob=     t?.dob.toString()
+               ob.zip_code=     t?.zip_code.toString()
+               ob.state=   t?. state_id
+               ob.last_name=     t?.last_name
+               ob.email=     t?.email
+               ob.address=     t?.address
+               ob.city=     t?.city.toString()
+                ob.state=t?.state.toString()
            }
 
-            repository.database.getDao().insertUserData(ob)
 
-           Log.d("tag", "in view model userdata checking: "+userData.mobile+"  :  "+userData.city)
-           dataupdates.postValue(ob)
-            repository.database.getDao().updateUserDb(ob)
+             dataupdates.postValue(ob)
+
            }
 
 

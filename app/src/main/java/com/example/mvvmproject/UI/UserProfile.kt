@@ -1,5 +1,6 @@
 package com.example.mvvmproject.UI
 
+import android.R.attr
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color.TRANSPARENT
@@ -29,6 +30,16 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import android.graphics.Bitmap.CompressFormat
+
+import android.R.attr.bitmap
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File as File
+
 
 class UserProfile : AppCompatActivity() {
     var TAG = "tag"
@@ -37,7 +48,8 @@ class UserProfile : AppCompatActivity() {
     lateinit var bottomSheet: ChoosePhotoBottomSheet
     lateinit var binding: ActivityUserProfileBinding
     lateinit var bitmapg: Bitmap
-     var userdata= UserPofileUpdate()
+    var context=this
+    var userdata = UserPofileUpdate()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
@@ -68,49 +80,35 @@ class UserProfile : AppCompatActivity() {
 
             userdata.apply {
 
-               patient_id = "120"
+                patient_id = "120"
                 email = binding.emaileditextprofile.text.toString()
                 first_name = binding.firstname.text.toString()
                 last_name = binding.lastname.text.toString()
-                dob =binding.birthday.text.toString()
+                dob = binding.birthday.text.toString()
                 address = binding.addressprofile.text.toString()
                 city = binding.cityprofilee.text.toString()
                 state_id = binding.stateprofilee.text.toString()
-                country_id="16055"
+                country_id = "16055"
                 mobile = binding.mobilenumprofile.text.toString()
                 zip_code = binding.zipcodeprofile.text.toString()
-                //bitmap = bitmapg
-
-
-
-
+                //profile_photo =getFileImage()
             }
+            Log.d("TAG", "onCreate: " + userdata.email.toString())
 
-
-            Log.d(TAG, "onCreate: in UserProfile " + userdata.patient_id.toString())
             viewmodelinstanse.setUserUpdates(userdata, this)
         }
 
 
-/*
-viewmodelinstanse.dataupdates.observe(this, Observer {
-    binding.userprofile=it
-
-
-})
-*/
 
 
         binding.getimagefloatingbtn.setOnClickListener {
             bottomSheet = ChoosePhotoBottomSheet(UserProfile@ this, this)
             //bottomSheet.window?.setBackgroundDrawable()
-
             bottomSheet.show()
         }
 
-
         viewmodelinstanse.getUserDatafromDb().observe(this, Observer {
-            Log.d("TAG", "in user address " + it?.mobile)
+            Log.d("arun", "in user address " + it?.mobile)
             binding.userprofile = it
 
 
@@ -126,12 +124,11 @@ viewmodelinstanse.dataupdates.observe(this, Observer {
 
 
             if (requestCode == 100) {
-
-
                 val bitmap = data?.extras?.get("data") as Bitmap
                 binding.shapeableImageView.setImageBitmap(bitmap)
                 bottomSheet.dismiss()
                 bitmapg = bitmap
+
             }
             if (requestCode == 101) {
                 //working as well
@@ -144,6 +141,7 @@ viewmodelinstanse.dataupdates.observe(this, Observer {
                 binding.shapeableImageView.setImageBitmap(bitmapg)
                 bottomSheet.dismiss()
                 bitmapg = bitmap
+
             }
         } else {
 
@@ -154,4 +152,22 @@ viewmodelinstanse.dataupdates.observe(this, Observer {
     }
 
 
+    fun getFileImage() : MultipartBody.Part {
+        val bos = ByteArrayOutputStream()
+        bitmapg.compress(Bitmap.CompressFormat.JPEG,50,bos)
+        val bitmapdata: ByteArray = bos.toByteArray()
+        val bs = ByteArrayInputStream(bitmapdata)
+
+        val part = MultipartBody.Part.createFormData("pic", "myPic", RequestBody.create(MediaType.parse("image/*"), bs.readBytes()))
+        return part
+
+    }
+
+
+
+
 }
+
+
+
+

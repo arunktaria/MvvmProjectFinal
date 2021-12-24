@@ -18,6 +18,7 @@ import com.example.mvvmproject.UI.Users_Address
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import retrofit2.Response
 
 class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
@@ -82,6 +83,7 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
                 ob.email=     email
                 ob.address=     address
                 ob.city=     city.toString()
+                ob.state=state
 
             }
 
@@ -129,19 +131,16 @@ class Repository(val retrofitApi: RetrofitApi, val database: UserDatabase) {
         return result.body()!!
     }
 
-var mutableupdate=MutableLiveData<GetUserDataUpdates>()
+var mutableupdate=MutableLiveData<UserDataReposnse>()
 
-    suspend  fun getUserUpdates(userupdate : UserPofileUpdate): GetUserDataUpdates {
-        retrofitApi.getUserUpdate(userupdate)
-      val result = retrofitApi.getUserUpdate(userupdate).body()!!
-
+    suspend  fun getUserUpdates(userupdate : UserPofileUpdate): UserDataReposnse {
+       // retrofitApi.getUserUpdate(userupdate)
+      val result = retrofitApi.getUserUpdate(userupdate)
       CoroutineScope(Dispatchers.IO)
           .launch {
-              mutableupdate.postValue(result)
-              database.getDao().delete()
-
+              mutableupdate.postValue(result.body())
           }
-      return result
+      return result.body()!!
   }
   }
 
